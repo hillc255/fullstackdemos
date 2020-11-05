@@ -1,7 +1,7 @@
-import sys
 from flask import Flask, render_template, abort, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+import sys
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:picasso0@localhost:5432/todoapp'
@@ -30,6 +30,7 @@ def create_todo():
     todo = Todo(description=description)
     db.session.add(todo)
     db.session.commit()
+    body['completed'] = todo.completed
     body['description'] = todo.description
   except:
     error = True
@@ -46,6 +47,7 @@ def create_todo():
 def set_completed_todo(todo_id):
   try:
     completed = request.get_json()['completed']
+    print('completed', completed)
     todo = Todo.query.get(todo_id)
     todo.completed = completed
     db.session.commit()
@@ -57,4 +59,5 @@ def set_completed_todo(todo_id):
 
 @app.route('/')
 def index():
-  return render_template('index.html', data=Todo.query.order_by('id').all())
+  return render_template('index.html', todos=Todo.query.order_by('id').all())
+  #return render_template('index.html', data=Todo.query.order_by('id').all())
