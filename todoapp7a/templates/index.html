@@ -126,11 +126,15 @@
           const text = document.createTextNode(' ' + jsonResponse['description']);
           liItem.appendChild(text);
 
+       //   liItem.innerHTML = jsonResponse['description'];
+       //   liItem.prepend(checkbox);  
+
           const xbtn = document.createElement('button');
           xbtn.setAttribute('class', 'delete-button');
           xbtn.setAttribute('data-id', jsonResponse['id']);
           xbtn.innerHTML = '&cross;';
           liItem.appendChild(xbtn);
+         // liItem.insertAdjacentElement('afterend', xbtn);
 
           document.getElementById('todos').appendChild(liItem);
           document.getElementById('error').className = 'hidden';
